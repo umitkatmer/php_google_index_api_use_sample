@@ -6,14 +6,10 @@
 
 include("vendor/autoload.php");
 
-
-$url_datas = array(
-"",
-
-);
+$url_datas = array("",""); // ilgili site isimleri
 
 $client = new Google_Client();
-$client->setAuthConfig('pragmatic-braid-333209-5008403fc5dc.json');
+$client->setAuthConfig(''); // ****.json dosya sının ismi
 $client->addScope('https://www.googleapis.com/auth/indexing');
 $client->setUseBatch(true);
 
@@ -56,7 +52,7 @@ foreach ( $results as $id => $response ) {
 $finish_data[] = $data;
 
 }
-
+//dönüş bilgileri
 print_r($finish_data);
 
 
