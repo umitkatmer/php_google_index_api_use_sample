@@ -6,10 +6,10 @@
 
 include("vendor/autoload.php");
 
-$url_datas = array("",""); // ilgili site isimleri
+$url_datas = array("");
 
 $client = new Google_Client();
-$client->setAuthConfig(''); // ****.json dosya sının ismi
+$client->setAuthConfig('');// ******.json
 $client->addScope('https://www.googleapis.com/auth/indexing');
 $client->setUseBatch(true);
 
@@ -26,34 +26,37 @@ $postBody->setUrl($url_data);
 
 //init service Indexing ( like updateJobPosting )
 $service = new Google_Service_Indexing($client);
+	
 //create request
 //$service->urlNotifications->createRequestUri('https://indexing.googleapis.com/batch');
 $request_kame = $service->urlNotifications->publish($postBody);
+	
 //add request to batch
 $batch ->add($request_kame);
 
 $results   = $batch->execute();
-
 $res_count = count( $results );
 $data      = [];
+	
 foreach ( $results as $id => $response ) {
-	// Change "response-url-1" to "url-1".
-	$local_id = substr( $id, 9 );
-	if ( is_a( $response, 'Google_Service_Exception' ) ) {
-		$data[ $local_id ] = json_decode( $response->getMessage() );
-	} else {
-		$data[ $local_id ] = (array) $response->toSimpleObject();
-	}
-	if ( $res_count === 1 ) {
-		$data = $data[ $local_id ];
-	}
+	
+// Change "response-url-1" to "url-1".
+$local_id = substr( $id, 9 );
+if ( is_a( $response, 'Google_Service_Exception' ) ) {
+$data[ $local_id ] = json_decode( $response->getMessage() );
+} else {
+$data[ $local_id ] = (array) $response->toSimpleObject();
+}
+if ( $res_count === 1 ) {
+$data = $data[ $local_id ];
+}
+	
 }
 
 $finish_data[] = $data;
-
+	
 }
-//dönüş bilgileri
-print_r($finish_data);
 
+print_r($finish_data);
 
 ?>
